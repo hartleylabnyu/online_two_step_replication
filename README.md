@@ -9,6 +9,7 @@ and the Matrix Reasoning Item Bank (MaRs-IB) as described in Chierchia et al. (2
 Both tasks are publicly available on Pavlovia. The two-step task can be accessed [here](https://pavlovia.org/hartleylabnyu/space-task) 
 and the MaRS-IB task can be accessed [here](https://pavlovia.org/hartleylabnyu/mars).
 
-The R scripts and Matlab modeling code reproduce all analyses reported in the manuscript. 
+The output folder contains all model results and generated figures. 
+These can be reproduced by running the R scripts and Matlab modeling code contained in the repository.
 
 For questions, please contact katenuss@nyu.edu.
