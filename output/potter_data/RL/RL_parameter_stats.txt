@@ -1,0 +1,4 @@
+age_group	subject_id_mean	subject_id_sd	age_mean	age_sd	alpha_mean	alpha_sd	beta_mb_mean	beta_mb_sd	beta_mf_mean	beta_mf_sd	beta_mean	beta_sd	lambda_mean	lambda_sd	stickiness_mean	stickiness_sd	lik_mean	lik_sd	age_z_mean	age_z_sd
+Children	1884.269	381.426	10.477	1.429	0.21	0.311	2.08	0.834	2.419	1.606	2.892	1.902	0.4	0.308	0.107	0.584	166.865	28.42	-1.046	0.276
+Adolescents	1884.652	381.575	15.272	1.403	0.441	0.382	2.34	1.33	1.916	0.915	2.953	1.473	0.588	0.291	0.445	0.676	158.439	32.277	-0.118	0.271
+Adults	2094.52	142.524	22.068	2.33	0.552	0.259	2.857	1.507	1.941	1.205	3.077	1.312	0.592	0.281	0.985	0.721	141.611	26.85	1.197	0.451

@@ -1,0 +1,4 @@
+age_group	fast_rts_mean	fast_rts_sd	fast_rts_median	browser_interactions_mean	browser_interactions_sd	browser_interactions_median	num_quiz_correct_mean	num_quiz_correct_sd	num_quiz_correct_median	missed_responses_mean	missed_responses_sd	missed_responses_median
+Children	1.46	4.496	0	1.68	1.019	1	3.84	1.235	3	0.82	0.873	1
+Adolescents	0.16	0.889	0	1.96	1.678	1	3.26	0.664	3	1.06	0.652	1
+Adults	1.314	5.483	0	1.765	1.226	1	3.216	0.461	3	0.882	0.653	1
