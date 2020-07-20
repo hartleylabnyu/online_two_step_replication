@@ -39,7 +39,7 @@ library(tidyverse)  # data import
 library(glue)       # {}
 library(magrittr)   #  (%<>%)
 library(afex)       # mixed models
-#library(sjPlot)     # data visualization
+library(sjPlot)     # data visualization
 #library(doBy)       # summaryBy function
 
 
@@ -206,7 +206,7 @@ write_delim(mars_subs, path = glue("{output_folder}/summary_stats_subs.txt"), de
 mars_group_summary <- mars_subs %>%
   group_by(age_group) %>%
   summarise(across(
-    .cols = is.numeric, 
+    .cols = where(is.numeric), 
     .fns = list(mean = mean, median = median, sd = sd), na.rm = TRUE, 
     .names = "{col}_{fn}"
   ))
