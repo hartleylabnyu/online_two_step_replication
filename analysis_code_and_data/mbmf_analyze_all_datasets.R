@@ -165,7 +165,7 @@ tab_model(rt.mb.model,
 #initialize data frame
 explicit_data <- data.frame()
 for (i in c(1:length(data_files))){
-  sub_data <- read_csv(glue("data/online_data/online_csvs/{data_files[i]}")) 
+  sub_data <- read_csv(glue("data/online/online_csvs/{data_files[i]}")) 
   
   #determine whether explicit question was answered correctly
   red_planet_first = sub_data$red_planet_first_rocket[1]
