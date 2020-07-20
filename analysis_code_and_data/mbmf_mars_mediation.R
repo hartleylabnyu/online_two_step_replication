@@ -1,6 +1,6 @@
 #### MBMF - Mars mediation ####
 # Kate Nussenbaum - katenuss@nyu.edu
-# Last updated: 7/17/20
+# Last updated: 7/20/20
 
 # Does accuracy on the MaRS-IB mediate the relation between age and model-based behavior?
 
@@ -11,6 +11,7 @@ library(afex)
 library(mediation)
 library(diagram)
 library(tidyverse)
+library(sjPlot)
 
 # age group function
 # Add age group variable to data frame with raw ages
@@ -115,17 +116,17 @@ mb_age <- full_join(mb_index, sub_ages, by = "subject_id")
 ##############################
 
 #get list of files
-mars_files <- list.files(path = "../../mars/mars_analysis/data/")
+mars_files <- list.files(path = "data/online_mars/sub_csvs/")
 
 #initialize data frame
 mars_data <- data.frame()
 
 # Read in data
 for (i in c(1:length(data_files))){
-  sub_data <- read_csv(glue("../../mars/mars_analysis/data/{mars_files[i]}")) 
+  sub_data <- read_csv(glue("data/online_mars/sub_csvs/{mars_files[i]}")) 
   
   #get task date from filename
-  task_date <- sapply(strsplit(glue("../../mars/mars_analysis/data/{mars_files[i]}"), '_'), `[`, 4)
+  task_date <- sapply(strsplit(glue("data/online_mars/sub_csvs/{mars_files[i]}"), '_'), `[`, 4)
   sub_data$task_date <- task_date
   
   #compute the number of browser interactions
@@ -183,6 +184,8 @@ data$mars_acc_z <- scale_this(data$mars_acc)
 # Step 1: The total effect - is there a relation between age and mb? DV ~ IV
 fit.totaleffect <- lm(mb_effect_z ~ age_z, data)
 summary(fit.totaleffect)
+tab_model(fit.mediator,
+          file = "output/mb_mars_mediation/fit_totaleffect.html")
 
 # Answer: Yes.
 
@@ -190,6 +193,8 @@ summary(fit.totaleffect)
 # Mediator ~ IV
 fit.mediator <- lm(mars_acc_z ~ age_z, data)
 summary(fit.mediator)
+tab_model(fit.mediator,
+          file = "output/mb_mars_mediation/fit_mediator.html")
 
 # Answer: Yes
 
@@ -198,13 +203,23 @@ summary(fit.mediator)
 # DV ~ IV + Mediator
 fit.dv <- lm(mb_effect_z ~ age_z + mars_acc_z, data)
 summary(fit.dv)
+tab_model(fit.dv,
+          file = "output/mb_mars_mediation/fit_dv.html")
 
 
 # Answer: Yes - evidence for a partial mediation
 
 # Step 4: Causal mediation analysis - treat = IV, mediator = mediator
-results = mediate(fit.mediator, fit.dv, treat='age_z', mediator='mars_acc_z', boot=T)
-summary(results)
+med.out = mediate(fit.mediator, fit.dv, treat='age_z', mediator='mars_acc_z', boot=T)
+
+#save results
+lines <- summary(med.out) %>%
+    capture.output() %>%
+    discard(`==`, "") 
+
+lines_df <- as.data.frame(lines)
+write_delim(lines_df, "output/mb_mars_mediation/mediation_results.txt", delim = "\t")
+
 
 
 # Determine strings for plotting

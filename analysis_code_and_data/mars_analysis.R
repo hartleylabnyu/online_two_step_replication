@@ -585,7 +585,8 @@ wasi.mars <- lm(acc ~ wasi_mr_z * age_z , data = wasi_data)
 summary(wasi.mars)
 
 # manually save model outputs
-tab_model(wasi.mars, show.stat = F,
+tab_model(wasi.mars, 
+          show.stat = F,
           string.ci = "CI (95%)",
           string.est = "Estimate", 
           dv.labels = c("MaRs-IB ~ WASI"),
