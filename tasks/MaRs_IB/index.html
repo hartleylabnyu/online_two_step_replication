@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MaRs-IB</title> <!-- title of webpage -->
+    <script src="jspsych-6.1.0/jspsych.js"></script> <!-- load most recent library -->
+    <script src="jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js"></script> <!-- plugin to write text -->
+    <script src="jspsych-6.1.0/plugins/jspsych-image-keyboard-response.js"></script> <!-- plugin to display images -->
+    <script src="jspsych-6.1.0/plugins/jspsych-html-button-response.js"></script> <!-- plugin to allow buttons -->
+    <script src="jspsych-6.1.0/plugins/jspsych-audio-button-response.js"></script> <!-- plugin to allow audio buttons -->
+    <script src="jspsych-6.1.0/plugins/jspsych-image-button-response.js"></script> <!-- plugin to allow buttons and display image -->
+    <script src="jspsych-6.1.0/plugins/jspsych-survey-multi-choice.js"></script> <!-- plugin for multiple choice surveys -->
+    <script src="jspsych-6.1.0/plugins/jspsych-survey-multi-select.js"></script> <!-- plugin for multiple choice surveys -->
+    <script src="jspsych-6.1.0/myplugins/copied_functions.js"></script>
+    <script src="jspsych-6.1.0/myplugins/jspsych-mars-trial.js"></script>
+    <script src="jspsych-6.1.0/plugins/jspsych-call-function.js"></script>
+    <script src="jspsych-6.1.0/plugins/jspsych-fullscreen.js"></script> <!-- plugin for fullscreen -->
+    <link href="jspsych-6.1.0/css/jspsych.css" rel="stylesheet" type="text/css"></link> <!-- make the experiment shiny -->
+
+    <script type="text/javascript" src="lib/vendors/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript" src="lib/jspsych-pavlovia-3.0.0.js"></script>
+    <meta name="pinterest" content="nopin" />
+    <meta name="pinterest" content="nohover" />
+
+  </head>
+  <body></body>
+  <script>
+
+  // Display alert message on back/refresh.
+  window.addEventListener("beforeunload", function (e) {
+  e.preventDefault();
+  (e || window.event).returnValue = null;
+  return null;
+  });
+
+
+  // create timeline
+  var main_timeline = [];
+
+  // preload images used in this experiment to avoid lag
+  // create an array of paths to images that need to be loaded
+  var images = ['practice/correct.jpg', 'practice/incorrect.png', 'practice/incorrect_main.jpg', 'practice/p1_M1.png', 'practice/p1_T1.png',
+'practice/pt1_M1.png','practice/pt1_T1.png', 'practice/pt1_T2.png', 'practice/pt1_T3.png', 'practice/pt1_T4.png',
+'practice/pt2_M1.png', 'practice/pt2_T1.png', 'practice/pt2_T2.png', 'practice/pt2_T3.png', 'practice/pt2_T4.png',
+'practice/pt3_M1.png', 'practice/pt3_T1.png', 'practice/pt3_T2.png', 'practice/pt3_T3.png', 'practice/pt3_T4.png',
+'img/blanktimer.png', 'img/timer1.png', 'img/timer2.png', 'img/timer3.png', 'img/timer4.png', 'img/timer5.png',
+'img/tf1_1_M_ss3.jpeg', 'img/tf1_1_T1_ss3_md.jpeg', 'img/tf1_1_T2_ss3_md.jpeg', 'img/tf1_1_T3_ss3_md.jpeg', 'img/tf1_1_T4_ss3_md.jpeg',
+'img/tf1_2_M_ss1.jpeg', 'img/tf1_2_T1_ss1_md.jpeg', 'img/tf1_2_T2_ss1_md.jpeg', 'img/tf1_2_T3_ss1_md.jpeg', 'img/tf1_2_T4_ss1_md.jpeg',
+'img/tf1_3_M_ss2.jpeg', 'img/tf1_3_T1_ss2_md.jpeg', 'img/tf1_3_T2_ss2_md.jpeg', 'img/tf1_3_T3_ss2_md.jpeg', 'img/tf1_3_T4_ss2_md.jpeg',
+'img/tf1_4_M_ss3.jpeg', 'img/tf1_4_T1_ss3_md.jpeg', 'img/tf1_4_T2_ss3_md.jpeg', 'img/tf1_4_T3_ss3_md.jpeg', 'img/tf1_4_T4_ss3_md.jpeg',
+'img/tf1_5_M_ss1.jpeg', 'img/tf1_5_T1_ss1_md.jpeg', 'img/tf1_5_T2_ss1_md.jpeg', 'img/tf1_5_T3_ss1_md.jpeg', 'img/tf1_5_T4_ss1_md.jpeg',
+'img/tf1_6_M_ss2.jpeg', 'img/tf1_6_T1_ss2_md.jpeg', 'img/tf1_6_T2_ss2_md.jpeg', 'img/tf1_6_T3_ss2_md.jpeg', 'img/tf1_6_T4_ss2_md.jpeg',
+'img/tf1_7_M_ss3.jpeg', 'img/tf1_7_T1_ss3_md.jpeg', 'img/tf1_7_T2_ss3_md.jpeg', 'img/tf1_7_T3_ss3_md.jpeg', 'img/tf1_7_T4_ss3_md.jpeg',
+'img/tf1_8_M_ss1.jpeg', 'img/tf1_8_T1_ss1_md.jpeg', 'img/tf1_8_T2_ss1_md.jpeg', 'img/tf1_8_T3_ss1_md.jpeg', 'img/tf1_8_T4_ss1_md.jpeg',
+'img/tf1_9_M_ss2.jpeg', 'img/tf1_9_T1_ss2_md.jpeg', 'img/tf1_9_T2_ss2_md.jpeg', 'img/tf1_9_T3_ss2_md.jpeg', 'img/tf1_9_T4_ss2_md.jpeg',
+'img/tf1_10_M_ss3.jpeg', 'img/tf1_10_T1_ss3_md.jpeg', 'img/tf1_10_T2_ss3_md.jpeg', 'img/tf1_10_T3_ss3_md.jpeg', 'img/tf1_10_T4_ss3_md.jpeg',
+'img/tf1_11_M_ss1.jpeg', 'img/tf1_11_T1_ss1_md.jpeg', 'img/tf1_11_T2_ss1_md.jpeg', 'img/tf1_11_T3_ss1_md.jpeg', 'img/tf1_11_T4_ss1_md.jpeg',
+'img/tf1_12_M_ss2.jpeg', 'img/tf1_12_T1_ss2_md.jpeg', 'img/tf1_12_T2_ss2_md.jpeg', 'img/tf1_12_T3_ss2_md.jpeg', 'img/tf1_12_T4_ss2_md.jpeg',
+'img/tf1_13_M_ss3.jpeg', 'img/tf1_13_T1_ss3_md.jpeg', 'img/tf1_13_T2_ss3_md.jpeg', 'img/tf1_13_T3_ss3_md.jpeg', 'img/tf1_13_T4_ss3_md.jpeg',
+'img/tf1_14_M_ss1.jpeg', 'img/tf1_14_T1_ss1_md.jpeg', 'img/tf1_14_T2_ss1_md.jpeg', 'img/tf1_14_T3_ss1_md.jpeg', 'img/tf1_14_T4_ss1_md.jpeg',
+'img/tf1_15_M_ss2.jpeg', 'img/tf1_15_T1_ss2_md.jpeg', 'img/tf1_15_T2_ss2_md.jpeg', 'img/tf1_15_T3_ss2_md.jpeg', 'img/tf1_15_T4_ss2_md.jpeg',
+'img/tf1_16_M_ss3.jpeg', 'img/tf1_16_T1_ss3_md.jpeg', 'img/tf1_16_T2_ss3_md.jpeg', 'img/tf1_16_T3_ss3_md.jpeg', 'img/tf1_16_T4_ss3_md.jpeg',
+'img/tf1_17_M_ss1.jpeg', 'img/tf1_17_T1_ss1_md.jpeg', 'img/tf1_17_T2_ss1_md.jpeg', 'img/tf1_17_T3_ss1_md.jpeg', 'img/tf1_17_T4_ss1_md.jpeg',
+'img/tf1_18_M_ss2.jpeg', 'img/tf1_18_T1_ss2_md.jpeg', 'img/tf1_18_T2_ss2_md.jpeg', 'img/tf1_18_T3_ss2_md.jpeg', 'img/tf1_18_T4_ss2_md.jpeg',
+'img/tf1_19_M_ss3.jpeg', 'img/tf1_19_T1_ss3_md.jpeg', 'img/tf1_19_T2_ss3_md.jpeg', 'img/tf1_19_T3_ss3_md.jpeg', 'img/tf1_19_T4_ss3_md.jpeg',
+'img/tf1_20_M_ss1.jpeg', 'img/tf1_20_T1_ss1_md.jpeg', 'img/tf1_20_T2_ss1_md.jpeg', 'img/tf1_20_T3_ss1_md.jpeg', 'img/tf1_20_T4_ss1_md.jpeg',
+'img/tf1_21_M_ss2.jpeg', 'img/tf1_21_T1_ss2_md.jpeg', 'img/tf1_21_T2_ss2_md.jpeg', 'img/tf1_21_T3_ss2_md.jpeg', 'img/tf1_21_T4_ss2_md.jpeg',
+'img/tf1_22_M_ss3.jpeg', 'img/tf1_22_T1_ss3_md.jpeg', 'img/tf1_22_T2_ss3_md.jpeg', 'img/tf1_22_T3_ss3_md.jpeg', 'img/tf1_22_T4_ss3_md.jpeg',
+'img/tf1_23_M_ss1.jpeg', 'img/tf1_23_T1_ss1_md.jpeg', 'img/tf1_23_T2_ss1_md.jpeg', 'img/tf1_23_T3_ss1_md.jpeg', 'img/tf1_23_T4_ss1_md.jpeg',
+'img/tf1_24_M_ss2.jpeg', 'img/tf1_24_T1_ss2_md.jpeg', 'img/tf1_24_T2_ss2_md.jpeg', 'img/tf1_24_T3_ss2_md.jpeg', 'img/tf1_24_T4_ss2_md.jpeg',
+'img/tf1_25_M_ss3.jpeg', 'img/tf1_25_T1_ss3_md.jpeg', 'img/tf1_25_T2_ss3_md.jpeg', 'img/tf1_25_T3_ss3_md.jpeg', 'img/tf1_25_T4_ss3_md.jpeg',
+'img/tf1_26_M_ss1.jpeg', 'img/tf1_26_T1_ss1_md.jpeg', 'img/tf1_26_T2_ss1_md.jpeg', 'img/tf1_26_T3_ss1_md.jpeg', 'img/tf1_26_T4_ss1_md.jpeg',
+'img/tf1_27_M_ss2.jpeg', 'img/tf1_27_T1_ss2_md.jpeg', 'img/tf1_27_T2_ss2_md.jpeg', 'img/tf1_27_T3_ss2_md.jpeg', 'img/tf1_27_T4_ss2_md.jpeg',
+'img/tf1_28_M_ss3.jpeg', 'img/tf1_28_T1_ss3_md.jpeg', 'img/tf1_28_T2_ss3_md.jpeg', 'img/tf1_28_T3_ss3_md.jpeg', 'img/tf1_28_T4_ss3_md.jpeg',
+'img/tf1_29_M_ss1.jpeg', 'img/tf1_29_T1_ss1_md.jpeg', 'img/tf1_29_T2_ss1_md.jpeg', 'img/tf1_29_T3_ss1_md.jpeg', 'img/tf1_29_T4_ss1_md.jpeg',
+'img/tf1_30_M_ss2.jpeg', 'img/tf1_30_T1_ss2_md.jpeg', 'img/tf1_30_T2_ss2_md.jpeg', 'img/tf1_30_T3_ss2_md.jpeg', 'img/tf1_30_T4_ss2_md.jpeg',
+'img/tf1_31_M_ss3.jpeg', 'img/tf1_31_T1_ss3_md.jpeg', 'img/tf1_31_T2_ss3_md.jpeg', 'img/tf1_31_T3_ss3_md.jpeg', 'img/tf1_31_T4_ss3_md.jpeg',
+'img/tf1_32_M_ss1.jpeg', 'img/tf1_32_T1_ss1_md.jpeg', 'img/tf1_32_T2_ss1_md.jpeg', 'img/tf1_32_T3_ss1_md.jpeg', 'img/tf1_32_T4_ss1_md.jpeg',
+'img/tf1_33_M_ss2.jpeg', 'img/tf1_33_T1_ss2_md.jpeg', 'img/tf1_33_T2_ss2_md.jpeg', 'img/tf1_33_T3_ss2_md.jpeg', 'img/tf1_33_T4_ss2_md.jpeg',
+'img/tf1_34_M_ss3.jpeg', 'img/tf1_34_T1_ss3_md.jpeg', 'img/tf1_34_T2_ss3_md.jpeg', 'img/tf1_34_T3_ss3_md.jpeg', 'img/tf1_34_T4_ss3_md.jpeg',
+'img/tf1_35_M_ss1.jpeg', 'img/tf1_35_T1_ss1_md.jpeg', 'img/tf1_35_T2_ss1_md.jpeg', 'img/tf1_35_T3_ss1_md.jpeg', 'img/tf1_35_T4_ss1_md.jpeg',
+'img/tf1_36_M_ss2.jpeg', 'img/tf1_36_T1_ss2_md.jpeg', 'img/tf1_36_T2_ss2_md.jpeg', 'img/tf1_36_T3_ss2_md.jpeg', 'img/tf1_36_T4_ss2_md.jpeg',
+'img/tf1_37_M_ss3.jpeg', 'img/tf1_37_T1_ss3_md.jpeg', 'img/tf1_37_T2_ss3_md.jpeg', 'img/tf1_37_T3_ss3_md.jpeg', 'img/tf1_37_T4_ss3_md.jpeg',
+'img/tf1_38_M_ss1.jpeg', 'img/tf1_38_T1_ss1_md.jpeg', 'img/tf1_38_T2_ss1_md.jpeg', 'img/tf1_38_T3_ss1_md.jpeg', 'img/tf1_38_T4_ss1_md.jpeg',
+'img/tf1_39_M_ss2.jpeg', 'img/tf1_39_T1_ss2_md.jpeg', 'img/tf1_39_T2_ss2_md.jpeg', 'img/tf1_39_T3_ss2_md.jpeg', 'img/tf1_39_T4_ss2_md.jpeg',
+'img/tf1_40_M_ss3.jpeg', 'img/tf1_40_T1_ss3_md.jpeg', 'img/tf1_40_T2_ss3_md.jpeg', 'img/tf1_40_T3_ss3_md.jpeg', 'img/tf1_40_T4_ss3_md.jpeg',
+'img/tf1_41_M_ss1.jpeg', 'img/tf1_41_T1_ss1_md.jpeg', 'img/tf1_41_T2_ss1_md.jpeg', 'img/tf1_41_T3_ss1_md.jpeg', 'img/tf1_41_T4_ss1_md.jpeg',
+'img/tf1_42_M_ss2.jpeg', 'img/tf1_42_T1_ss2_md.jpeg', 'img/tf1_42_T2_ss2_md.jpeg', 'img/tf1_42_T3_ss2_md.jpeg', 'img/tf1_42_T4_ss2_md.jpeg',
+'img/tf1_43_M_ss3.jpeg', 'img/tf1_43_T1_ss3_md.jpeg', 'img/tf1_43_T2_ss3_md.jpeg', 'img/tf1_43_T3_ss3_md.jpeg', 'img/tf1_43_T4_ss3_md.jpeg',
+'img/tf1_44_M_ss1.jpeg', 'img/tf1_44_T1_ss1_md.jpeg', 'img/tf1_44_T2_ss1_md.jpeg', 'img/tf1_44_T3_ss1_md.jpeg', 'img/tf1_44_T4_ss1_md.jpeg',
+'img/tf1_45_M_ss2.jpeg', 'img/tf1_45_T1_ss2_md.jpeg', 'img/tf1_45_T2_ss2_md.jpeg', 'img/tf1_45_T3_ss2_md.jpeg', 'img/tf1_45_T4_ss2_md.jpeg',
+'img/tf1_46_M_ss3.jpeg', 'img/tf1_46_T1_ss3_md.jpeg', 'img/tf1_46_T2_ss3_md.jpeg', 'img/tf1_46_T3_ss3_md.jpeg', 'img/tf1_46_T4_ss3_md.jpeg',
+'img/tf1_47_M_ss1.jpeg', 'img/tf1_47_T1_ss1_md.jpeg', 'img/tf1_47_T2_ss1_md.jpeg', 'img/tf1_47_T3_ss1_md.jpeg', 'img/tf1_47_T4_ss1_md.jpeg',
+'img/tf1_48_M_ss2.jpeg', 'img/tf1_48_T1_ss2_md.jpeg', 'img/tf1_48_T2_ss2_md.jpeg', 'img/tf1_48_T3_ss2_md.jpeg', 'img/tf1_48_T4_ss2_md.jpeg',
+'img/tf1_49_M_ss3.jpeg', 'img/tf1_49_T1_ss3_md.jpeg', 'img/tf1_49_T2_ss3_md.jpeg', 'img/tf1_49_T3_ss3_md.jpeg', 'img/tf1_49_T4_ss3_md.jpeg',
+'img/tf1_50_M_ss1.jpeg', 'img/tf1_50_T1_ss1_md.jpeg', 'img/tf1_50_T2_ss1_md.jpeg', 'img/tf1_50_T3_ss1_md.jpeg', 'img/tf1_50_T4_ss1_md.jpeg',
+'img/tf1_51_M_ss2.jpeg', 'img/tf1_51_T1_ss2_md.jpeg', 'img/tf1_51_T2_ss2_md.jpeg', 'img/tf1_51_T3_ss2_md.jpeg', 'img/tf1_51_T4_ss2_md.jpeg',
+'img/tf1_52_M_ss3.jpeg', 'img/tf1_52_T1_ss3_md.jpeg', 'img/tf1_52_T2_ss3_md.jpeg', 'img/tf1_52_T3_ss3_md.jpeg', 'img/tf1_52_T4_ss3_md.jpeg',
+'img/tf1_53_M_ss1.jpeg', 'img/tf1_53_T1_ss1_md.jpeg', 'img/tf1_53_T2_ss1_md.jpeg', 'img/tf1_53_T3_ss1_md.jpeg', 'img/tf1_53_T4_ss1_md.jpeg',
+'img/tf1_54_M_ss2.jpeg', 'img/tf1_54_T1_ss2_md.jpeg', 'img/tf1_54_T2_ss2_md.jpeg', 'img/tf1_54_T3_ss2_md.jpeg', 'img/tf1_54_T4_ss2_md.jpeg',
+'img/tf1_55_M_ss3.jpeg', 'img/tf1_55_T1_ss3_md.jpeg', 'img/tf1_55_T2_ss3_md.jpeg', 'img/tf1_55_T3_ss3_md.jpeg', 'img/tf1_55_T4_ss3_md.jpeg',
+'img/tf1_56_M_ss1.jpeg', 'img/tf1_56_T1_ss1_md.jpeg', 'img/tf1_56_T2_ss1_md.jpeg', 'img/tf1_56_T3_ss1_md.jpeg', 'img/tf1_56_T4_ss1_md.jpeg',
+'img/tf1_57_M_ss2.jpeg', 'img/tf1_57_T1_ss2_md.jpeg', 'img/tf1_57_T2_ss2_md.jpeg', 'img/tf1_57_T3_ss2_md.jpeg', 'img/tf1_57_T4_ss2_md.jpeg',
+'img/tf1_58_M_ss3.jpeg', 'img/tf1_58_T1_ss3_md.jpeg', 'img/tf1_58_T2_ss3_md.jpeg', 'img/tf1_58_T3_ss3_md.jpeg', 'img/tf1_58_T4_ss3_md.jpeg',
+'img/tf1_59_M_ss1.jpeg', 'img/tf1_59_T1_ss1_md.jpeg', 'img/tf1_59_T2_ss1_md.jpeg', 'img/tf1_59_T3_ss1_md.jpeg', 'img/tf1_59_T4_ss1_md.jpeg',
+'img/tf1_60_M_ss2.jpeg', 'img/tf1_60_T1_ss2_md.jpeg', 'img/tf1_60_T2_ss2_md.jpeg', 'img/tf1_60_T3_ss2_md.jpeg', 'img/tf1_60_T4_ss2_md.jpeg',
+'img/tf1_61_M_ss3.jpeg', 'img/tf1_61_T1_ss3_md.jpeg', 'img/tf1_61_T2_ss3_md.jpeg', 'img/tf1_61_T3_ss3_md.jpeg', 'img/tf1_61_T4_ss3_md.jpeg',
+'img/tf1_62_M_ss1.jpeg', 'img/tf1_62_T1_ss1_md.jpeg', 'img/tf1_62_T2_ss1_md.jpeg', 'img/tf1_62_T3_ss1_md.jpeg', 'img/tf1_62_T4_ss1_md.jpeg',
+'img/tf1_63_M_ss2.jpeg', 'img/tf1_63_T1_ss2_md.jpeg', 'img/tf1_63_T2_ss2_md.jpeg', 'img/tf1_63_T3_ss2_md.jpeg', 'img/tf1_63_T4_ss2_md.jpeg',
+'img/tf1_64_M_ss3.jpeg', 'img/tf1_64_T1_ss3_md.jpeg', 'img/tf1_64_T2_ss3_md.jpeg', 'img/tf1_64_T3_ss3_md.jpeg', 'img/tf1_64_T4_ss3_md.jpeg',
+'img/tf1_65_M_ss1.jpeg', 'img/tf1_65_T1_ss1_md.jpeg', 'img/tf1_65_T2_ss1_md.jpeg', 'img/tf1_65_T3_ss1_md.jpeg', 'img/tf1_65_T4_ss1_md.jpeg',
+'img/tf1_66_M_ss2.jpeg', 'img/tf1_66_T1_ss2_md.jpeg', 'img/tf1_66_T2_ss2_md.jpeg', 'img/tf1_66_T3_ss2_md.jpeg', 'img/tf1_66_T4_ss2_md.jpeg',
+'img/tf1_67_M_ss3.jpeg', 'img/tf1_67_T1_ss3_md.jpeg', 'img/tf1_67_T2_ss3_md.jpeg', 'img/tf1_67_T3_ss3_md.jpeg', 'img/tf1_67_T4_ss3_md.jpeg',
+'img/tf1_68_M_ss1.jpeg', 'img/tf1_68_T1_ss1_md.jpeg', 'img/tf1_68_T2_ss1_md.jpeg', 'img/tf1_68_T3_ss1_md.jpeg', 'img/tf1_68_T4_ss1_md.jpeg',
+'img/tf1_69_M_ss2.jpeg', 'img/tf1_69_T1_ss2_md.jpeg', 'img/tf1_69_T2_ss2_md.jpeg', 'img/tf1_69_T3_ss2_md.jpeg', 'img/tf1_69_T4_ss2_md.jpeg',
+'img/tf1_70_M_ss3.jpeg', 'img/tf1_70_T1_ss3_md.jpeg', 'img/tf1_70_T2_ss3_md.jpeg', 'img/tf1_70_T3_ss3_md.jpeg', 'img/tf1_70_T4_ss3_md.jpeg',
+'img/tf1_71_M_ss1.jpeg', 'img/tf1_71_T1_ss1_md.jpeg', 'img/tf1_71_T2_ss1_md.jpeg', 'img/tf1_71_T3_ss1_md.jpeg', 'img/tf1_71_T4_ss1_md.jpeg',
+'img/tf1_72_M_ss2.jpeg', 'img/tf1_72_T1_ss2_md.jpeg', 'img/tf1_72_T2_ss2_md.jpeg', 'img/tf1_72_T3_ss2_md.jpeg', 'img/tf1_72_T4_ss2_md.jpeg',
+'img/tf1_73_M_ss3.jpeg', 'img/tf1_73_T1_ss3_md.jpeg', 'img/tf1_73_T2_ss3_md.jpeg', 'img/tf1_73_T3_ss3_md.jpeg', 'img/tf1_73_T4_ss3_md.jpeg',
+'img/tf1_74_M_ss1.jpeg', 'img/tf1_74_T1_ss1_md.jpeg', 'img/tf1_74_T2_ss1_md.jpeg', 'img/tf1_74_T3_ss1_md.jpeg', 'img/tf1_74_T4_ss1_md.jpeg',
+'img/tf1_75_M_ss2.jpeg', 'img/tf1_75_T1_ss2_md.jpeg', 'img/tf1_75_T2_ss2_md.jpeg', 'img/tf1_75_T3_ss2_md.jpeg', 'img/tf1_75_T4_ss2_md.jpeg',
+'img/tf1_76_M_ss3.jpeg', 'img/tf1_76_T1_ss3_md.jpeg', 'img/tf1_76_T2_ss3_md.jpeg', 'img/tf1_76_T3_ss3_md.jpeg', 'img/tf1_76_T4_ss3_md.jpeg',
+'img/tf1_77_M_ss1.jpeg', 'img/tf1_77_T1_ss1_md.jpeg', 'img/tf1_77_T2_ss1_md.jpeg', 'img/tf1_77_T3_ss1_md.jpeg', 'img/tf1_77_T4_ss1_md.jpeg',
+'img/tf1_78_M_ss2.jpeg', 'img/tf1_78_T1_ss2_md.jpeg', 'img/tf1_78_T2_ss2_md.jpeg', 'img/tf1_78_T3_ss2_md.jpeg', 'img/tf1_78_T4_ss2_md.jpeg',
+'img/tf1_79_M_ss3.jpeg', 'img/tf1_79_T1_ss3_md.jpeg', 'img/tf1_79_T2_ss3_md.jpeg', 'img/tf1_79_T3_ss3_md.jpeg', 'img/tf1_79_T4_ss3_md.jpeg',
+'img/tf1_80_M_ss1.jpeg', 'img/tf1_80_T1_ss1_md.jpeg', 'img/tf1_80_T2_ss1_md.jpeg', 'img/tf1_80_T3_ss1_md.jpeg', 'img/tf1_80_T4_ss1_md.jpeg'];
+
+
+// Pavlovia connection
+/* init connection with pavlovia.org */
+var pavlovia_init = {
+	type: "pavlovia",
+	command: "init"
+}; 
+
+/* finish connection with pavlovia.org */
+var pavlovia_finish = {
+	type: "pavlovia",
+	command: "finish"
+	}; 
+
+  // INSTRUCTIONS
+    // define welcome message trial
+    var welcome = {
+      type: 'html-button-response',
+      stimulus: '<p>Welcome! Press START to begin.</p><br>',
+      choices: ['START']
+  };
+
+
+ // enter fullscreen - commented for debugging
+  main_timeline.push({
+  type: 'fullscreen',
+  fullscreen_mode: true
+  });
+
+    // create new trial to show instructions to subject
+    // Note: here we will use html formatting to control how the instructions display
+    var instructions_1 = {
+      type: "audio-button-response",
+      prompt: "<p>In this task, you will be shown a 3x3 grid of patterns.</p> " +
+          "<p>The last one in the bottom right-hand corner, <strong>will be " +
+          "missing:</strong></p> " +
+          "<div style='width: 700px;'>"+
+          "<div style='float: top;'><img src='practice/p1_M1.png'></img>" +
+          "<p class='small'>You need to select<strong> which of the four possible patterns " +
+          "</strong>along the bottom<strong> fits into the gap:</strong></p></div>" +
+          "<div style='float: top;'><img src='practice/p1_T1.png'></img>" +
+          "</div><br>", //<br> is giving us more space between text and next button
+        stimulus: "audio/mars_instructions_slide2.wav",
+        choices: ['I am ready!']
+    };
+
+
+    var instructions_2 = {
+      type: "audio-button-response",
+      prompt: "<p>Try to be as fast and as accurate as you can be.</p> " +
+          "<p>If you cannot solve the puzzle then you should guess - you will " +
+          "not be penalised for an incorrect answer.</p> " +
+          "<p>The task contains a shuffled mix of easy, medium and hard puzzles.</p> " +
+          "<p>You will have <strong>30 seconds</strong> to complete each puzzle.</p><br> ",
+      stimulus: "audio/mars_instructions_slide3.wav",
+      choices: ['PRACTICE']
+    };
+
+
+  // PRACTICE TRIALS
+  // make an array that contains all the different trials we want to run
+  var practice_trial_stimuli_1 = [
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='practice/pt1_M1.png'></img>", choices: ["<img src='practice/pt1_T1.png'></img>", "<img src='practice/pt1_T2.png'></img>", "<img src='practice/pt1_T3.png'></img>", "<img src='practice/pt1_T4.png'></img>"], data: {part: 'practice', correct_response: "<img src='practice/pt1_T1.png'></img>", correct_button: 0}},
+  ];
+
+  var practice_trial_stimuli_2 = [
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='practice/pt2_M1.png'></img>", choices: ["<img src='practice/pt2_T1.png'></img>", "<img src='practice/pt2_T2.png'></img>", "<img src='practice/pt2_T3.png'></img>", "<img src='practice/pt2_T4.png'></img>"], data: {part: 'practice', correct_response: "<img src='practice/pt2_T1.png'></img>", correct_button: 0}},
+ ];
+
+  var practice_trial_stimuli_3 = [
+   { stimulus: "<img style='border: 4px solid darkgrey;' src='practice/pt3_M1.png'></img>", choices: ["<img src='practice/pt3_T1.png'></img>", "<img src='practice/pt3_T2.png'></img>", "<img src='practice/pt3_T3.png'></img>", "<img src='practice/pt3_T4.png'></img>"], data: {part: 'practice', correct_response: "<img src='practice/pt3_T1.png'></img>", correct_button: 0}}
+  ];
+
+  // include fixation cross (+)
+  var fixation_practice = {
+    type: 'html-keyboard-response', // plugin we use
+    stimulus: '<div style="font-size:60px;">+</div>', // define the size of the fixation cross
+    choices: jsPsych.NO_KEYS, // no responses will be accepted
+    trial_duration: 500, // how long do we want to present the fixation cross
+    post_trial_gap: 100, // there will be a 100ms blank screen after the fixation cross
+    data: {part: 'fixation'},
+    on_finish: function(timestamp){
+          var timestamp = (new Date).toISOString().replace(/z|t/gi,' ').trim();
+          jsPsych.data.addDataToLastTrial({timestamp});
+  }}
+
+  // set up practice trial to show the practice problem
+  var practice_trial = {
+    type: "mars-trial",
+    stimulus: jsPsych.timelineVariable('stimulus'),
+    choices: jsPsych.timelineVariable('choices'),
+    data: jsPsych.timelineVariable('data'),
+    trial_duration: 30000, // subjects have 30 seconds to respond
+    countdown_start: 25000, // when to start countdown clock
+    feedback_duration: 2000, // show feedback in practice trials for 2 seconds
+    shuffle_buttons: true,
+    display_feedback: true,
+    pos_img: "<div id='feedback'> <img src='practice/correct.jpg' height='100' width='100'></img> </div>",
+    neg_img: "<div id='feedback'> <img src='practice/incorrect.png' height='125' width='150'></img> </div>",
+    on_finish: function(data){
+      if (data.unshuffled_button == data.correct_button) {
+        data.correct = true;}
+      else {data.correct = false}
+    },
+    function(timestamp){
+          var timestamp = (new Date).toISOString().replace(/z|t/gi,' ').trim();
+          jsPsych.data.addDataToLastTrial({timestamp});
+  }
+}
+
+
+  // create new timeline to combine practice trials
+  var practice_procedure_1 = {
+    timeline: [fixation_practice, practice_trial],
+    timeline_variables: practice_trial_stimuli_1,
+    loop_function: function(data) {
+      var last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
+      if(last_trial_correct){return false;}
+      else {return true;}
+      }
+  }
+
+  var practice_procedure_2 = {
+    timeline: [fixation_practice, practice_trial],
+    timeline_variables: practice_trial_stimuli_2,
+    loop_function: function(data) {
+      var last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
+      if(last_trial_correct){return false;}
+      else {return true;}
+      }
+  }
+
+  var practice_procedure_3 = {
+    timeline: [fixation_practice, practice_trial],
+    timeline_variables: practice_trial_stimuli_3,
+    loop_function: function(data) {
+      var last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
+      if(last_trial_correct){return false;}
+      else {return true;}
+      }
+  }
+
+// instructions after practice
+  var instructions_3 = {
+    type: "audio-button-response",
+    prompt: "<p><strong>Success!</strong></p> " +
+        "<p>You seem to be getting the hang of this...</p> " +
+        "<p>Let's move on to the real trials.</p><br> ",
+    choices: ['Continue to real trials'],
+    stimulus: "audio/mars_instructions_slide4.wav",
+  };
+
+
+  // MAIN TRIALS
+  // make an array that contains all the different trials we want to run
+  var stimuli = [
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_1_M_ss3.jpeg'></img>", choices: ["<img src='img/tf1_1_T1_ss3_md.jpeg'></img>", "<img src='img/tf1_1_T2_ss3_md.jpeg'></img>", "<img src='img/tf1_1_T3_ss3_md.jpeg'></img>", "<img src='img/tf1_1_T4_ss3_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_1_T1_ss3_md.jpeg'></img>", correct_button: 0}}, // data is tagging each circle as a test trial, makes analysis easier
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_2_M_ss1.jpeg'></img>", choices: ["<img src='img/tf1_2_T1_ss1_md.jpeg'></img>", "<img src='img/tf1_2_T2_ss1_md.jpeg'></img>", "<img src='img/tf1_2_T3_ss1_md.jpeg'></img>", "<img src='img/tf1_2_T4_ss1_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_2_T1_ss1_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_3_M_ss2.jpeg'></img>", choices: ["<img src='img/tf1_3_T1_ss2_md.jpeg'></img>", "<img src='img/tf1_3_T2_ss2_md.jpeg'></img>", "<img src='img/tf1_3_T3_ss2_md.jpeg'></img>", "<img src='img/tf1_3_T4_ss2_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_3_T1_ss2_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_4_M_ss3.jpeg'></img>", choices: ["<img src='img/tf1_4_T1_ss3_md.jpeg'></img>", "<img src='img/tf1_4_T2_ss3_md.jpeg'></img>", "<img src='img/tf1_4_T3_ss3_md.jpeg'></img>", "<img src='img/tf1_4_T4_ss3_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_4_T1_ss3_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_5_M_ss1.jpeg'></img>", choices: ["<img src='img/tf1_5_T1_ss1_md.jpeg'></img>", "<img src='img/tf1_5_T2_ss1_md.jpeg'></img>", "<img src='img/tf1_5_T3_ss1_md.jpeg'></img>", "<img src='img/tf1_5_T4_ss1_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_5_T1_ss1_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_6_M_ss2.jpeg'></img>", choices: ["<img src='img/tf1_6_T1_ss2_md.jpeg'></img>", "<img src='img/tf1_6_T2_ss2_md.jpeg'></img>", "<img src='img/tf1_6_T3_ss2_md.jpeg'></img>", "<img src='img/tf1_6_T4_ss2_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_6_T1_ss2_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_7_M_ss3.jpeg'></img>", choices: ["<img src='img/tf1_7_T1_ss3_md.jpeg'></img>", "<img src='img/tf1_7_T2_ss3_md.jpeg'></img>", "<img src='img/tf1_7_T3_ss3_md.jpeg'></img>", "<img src='img/tf1_7_T4_ss3_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_7_T1_ss3_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_8_M_ss1.jpeg'></img>", choices: ["<img src='img/tf1_8_T1_ss1_md.jpeg'></img>", "<img src='img/tf1_8_T2_ss1_md.jpeg'></img>", "<img src='img/tf1_8_T3_ss1_md.jpeg'></img>", "<img src='img/tf1_8_T4_ss1_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_8_T1_ss1_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_9_M_ss2.jpeg'></img>", choices: ["<img src='img/tf1_9_T1_ss2_md.jpeg'></img>", "<img src='img/tf1_9_T2_ss2_md.jpeg'></img>", "<img src='img/tf1_9_T3_ss2_md.jpeg'></img>", "<img src='img/tf1_9_T4_ss2_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_9_T1_ss2_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_10_M_ss3.jpeg'></img>", choices: ["<img src='img/tf1_10_T1_ss3_md.jpeg'></img>", "<img src='img/tf1_10_T2_ss3_md.jpeg'></img>", "<img src='img/tf1_10_T3_ss3_md.jpeg'></img>", "<img src='img/tf1_10_T4_ss3_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_10_T1_ss3_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_11_M_ss1.jpeg'></img>", choices: ["<img src='img/tf1_11_T1_ss1_md.jpeg'></img>", "<img src='img/tf1_11_T2_ss1_md.jpeg'></img>", "<img src='img/tf1_11_T3_ss1_md.jpeg'></img>", "<img src='img/tf1_11_T4_ss1_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_11_T1_ss1_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_12_M_ss2.jpeg'></img>", choices: ["<img src='img/tf1_12_T1_ss2_md.jpeg'></img>", "<img src='img/tf1_12_T2_ss2_md.jpeg'></img>", "<img src='img/tf1_12_T3_ss2_md.jpeg'></img>", "<img src='img/tf1_12_T4_ss2_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_12_T1_ss2_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_13_M_ss3.jpeg'></img>", choices: ["<img src='img/tf1_13_T1_ss3_md.jpeg'></img>", "<img src='img/tf1_13_T2_ss3_md.jpeg'></img>", "<img src='img/tf1_13_T3_ss3_md.jpeg'></img>", "<img src='img/tf1_13_T4_ss3_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_13_T1_ss3_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_14_M_ss1.jpeg'></img>", choices: ["<img src='img/tf1_14_T1_ss1_md.jpeg'></img>", "<img src='img/tf1_14_T2_ss1_md.jpeg'></img>", "<img src='img/tf1_14_T3_ss1_md.jpeg'></img>", "<img src='img/tf1_14_T4_ss1_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_14_T1_ss1_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_15_M_ss2.jpeg'></img>", choices: ["<img src='img/tf1_15_T1_ss2_md.jpeg'></img>", "<img src='img/tf1_15_T2_ss2_md.jpeg'></img>", "<img src='img/tf1_15_T3_ss2_md.jpeg'></img>", "<img src='img/tf1_15_T4_ss2_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_15_T1_ss2_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_16_M_ss3.jpeg'></img>", choices: ["<img src='img/tf1_16_T1_ss3_md.jpeg'></img>", "<img src='img/tf1_16_T2_ss3_md.jpeg'></img>", "<img src='img/tf1_16_T3_ss3_md.jpeg'></img>", "<img src='img/tf1_16_T4_ss3_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_16_T1_ss3_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_17_M_ss1.jpeg'></img>", choices: ["<img src='img/tf1_17_T1_ss1_md.jpeg'></img>", "<img src='img/tf1_17_T2_ss1_md.jpeg'></img>", "<img src='img/tf1_17_T3_ss1_md.jpeg'></img>", "<img src='img/tf1_17_T4_ss1_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_17_T1_ss1_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_18_M_ss2.jpeg'></img>", choices: ["<img src='img/tf1_18_T1_ss2_md.jpeg'></img>", "<img src='img/tf1_18_T2_ss2_md.jpeg'></img>", "<img src='img/tf1_18_T3_ss2_md.jpeg'></img>", "<img src='img/tf1_18_T4_ss2_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_18_T1_ss2_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_19_M_ss3.jpeg'></img>", choices: ["<img src='img/tf1_19_T1_ss3_md.jpeg'></img>", "<img src='img/tf1_19_T2_ss3_md.jpeg'></img>", "<img src='img/tf1_19_T3_ss3_md.jpeg'></img>", "<img src='img/tf1_19_T4_ss3_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_19_T1_ss3_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_20_M_ss1.jpeg'></img>", choices: ["<img src='img/tf1_20_T1_ss1_md.jpeg'></img>", "<img src='img/tf1_20_T2_ss1_md.jpeg'></img>", "<img src='img/tf1_20_T3_ss1_md.jpeg'></img>", "<img src='img/tf1_20_T4_ss1_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_20_T1_ss1_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_21_M_ss2.jpeg'></img>", choices: ["<img src='img/tf1_21_T1_ss2_md.jpeg'></img>", "<img src='img/tf1_21_T2_ss2_md.jpeg'></img>", "<img src='img/tf1_21_T3_ss2_md.jpeg'></img>", "<img src='img/tf1_21_T4_ss2_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_21_T1_ss2_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_22_M_ss3.jpeg'></img>", choices: ["<img src='img/tf1_22_T1_ss3_md.jpeg'></img>", "<img src='img/tf1_22_T2_ss3_md.jpeg'></img>", "<img src='img/tf1_22_T3_ss3_md.jpeg'></img>", "<img src='img/tf1_22_T4_ss3_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_22_T1_ss3_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_23_M_ss1.jpeg'></img>", choices: ["<img src='img/tf1_23_T1_ss1_md.jpeg'></img>", "<img src='img/tf1_23_T2_ss1_md.jpeg'></img>", "<img src='img/tf1_23_T3_ss1_md.jpeg'></img>", "<img src='img/tf1_23_T4_ss1_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_23_T1_ss1_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_24_M_ss2.jpeg'></img>", choices: ["<img src='img/tf1_24_T1_ss2_md.jpeg'></img>", "<img src='img/tf1_24_T2_ss2_md.jpeg'></img>", "<img src='img/tf1_24_T3_ss2_md.jpeg'></img>", "<img src='img/tf1_24_T4_ss2_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_24_T1_ss2_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_25_M_ss3.jpeg'></img>", choices: ["<img src='img/tf1_25_T1_ss3_md.jpeg'></img>", "<img src='img/tf1_25_T2_ss3_md.jpeg'></img>", "<img src='img/tf1_25_T3_ss3_md.jpeg'></img>", "<img src='img/tf1_25_T4_ss3_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_25_T1_ss3_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_26_M_ss1.jpeg'></img>", choices: ["<img src='img/tf1_26_T1_ss1_md.jpeg'></img>", "<img src='img/tf1_26_T2_ss1_md.jpeg'></img>", "<img src='img/tf1_26_T3_ss1_md.jpeg'></img>", "<img src='img/tf1_26_T4_ss1_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_26_T1_ss1_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_27_M_ss2.jpeg'></img>", choices: ["<img src='img/tf1_27_T1_ss2_md.jpeg'></img>", "<img src='img/tf1_27_T2_ss2_md.jpeg'></img>", "<img src='img/tf1_27_T3_ss2_md.jpeg'></img>", "<img src='img/tf1_27_T4_ss2_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_27_T1_ss2_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_28_M_ss3.jpeg'></img>", choices: ["<img src='img/tf1_28_T1_ss3_md.jpeg'></img>", "<img src='img/tf1_28_T2_ss3_md.jpeg'></img>", "<img src='img/tf1_28_T3_ss3_md.jpeg'></img>", "<img src='img/tf1_28_T4_ss3_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_28_T1_ss3_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_29_M_ss1.jpeg'></img>", choices: ["<img src='img/tf1_29_T1_ss1_md.jpeg'></img>", "<img src='img/tf1_29_T2_ss1_md.jpeg'></img>", "<img src='img/tf1_29_T3_ss1_md.jpeg'></img>", "<img src='img/tf1_29_T4_ss1_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_29_T1_ss1_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_30_M_ss2.jpeg'></img>", choices: ["<img src='img/tf1_30_T1_ss2_md.jpeg'></img>", "<img src='img/tf1_30_T2_ss2_md.jpeg'></img>", "<img src='img/tf1_30_T3_ss2_md.jpeg'></img>", "<img src='img/tf1_30_T4_ss2_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_30_T1_ss2_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_31_M_ss3.jpeg'></img>", choices: ["<img src='img/tf1_31_T1_ss3_md.jpeg'></img>", "<img src='img/tf1_31_T2_ss3_md.jpeg'></img>", "<img src='img/tf1_31_T3_ss3_md.jpeg'></img>", "<img src='img/tf1_31_T4_ss3_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_31_T1_ss3_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_32_M_ss1.jpeg'></img>", choices: ["<img src='img/tf1_32_T1_ss1_md.jpeg'></img>", "<img src='img/tf1_32_T2_ss1_md.jpeg'></img>", "<img src='img/tf1_32_T3_ss1_md.jpeg'></img>", "<img src='img/tf1_32_T4_ss1_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_32_T1_ss1_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_33_M_ss2.jpeg'></img>", choices: ["<img src='img/tf1_33_T1_ss2_md.jpeg'></img>", "<img src='img/tf1_33_T2_ss2_md.jpeg'></img>", "<img src='img/tf1_33_T3_ss2_md.jpeg'></img>", "<img src='img/tf1_33_T4_ss2_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_33_T1_ss2_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_34_M_ss3.jpeg'></img>", choices: ["<img src='img/tf1_34_T1_ss3_md.jpeg'></img>", "<img src='img/tf1_34_T2_ss3_md.jpeg'></img>", "<img src='img/tf1_34_T3_ss3_md.jpeg'></img>", "<img src='img/tf1_34_T4_ss3_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_34_T1_ss3_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_35_M_ss1.jpeg'></img>", choices: ["<img src='img/tf1_35_T1_ss1_md.jpeg'></img>", "<img src='img/tf1_35_T2_ss1_md.jpeg'></img>", "<img src='img/tf1_35_T3_ss1_md.jpeg'></img>", "<img src='img/tf1_35_T4_ss1_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_35_T1_ss1_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_36_M_ss2.jpeg'></img>", choices: ["<img src='img/tf1_36_T1_ss2_md.jpeg'></img>", "<img src='img/tf1_36_T2_ss2_md.jpeg'></img>", "<img src='img/tf1_36_T3_ss2_md.jpeg'></img>", "<img src='img/tf1_36_T4_ss2_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_36_T1_ss2_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_37_M_ss3.jpeg'></img>", choices: ["<img src='img/tf1_37_T1_ss3_md.jpeg'></img>", "<img src='img/tf1_37_T2_ss3_md.jpeg'></img>", "<img src='img/tf1_37_T3_ss3_md.jpeg'></img>", "<img src='img/tf1_37_T4_ss3_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_37_T1_ss3_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_38_M_ss1.jpeg'></img>", choices: ["<img src='img/tf1_38_T1_ss1_md.jpeg'></img>", "<img src='img/tf1_38_T2_ss1_md.jpeg'></img>", "<img src='img/tf1_38_T3_ss1_md.jpeg'></img>", "<img src='img/tf1_38_T4_ss1_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_38_T1_ss1_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_39_M_ss2.jpeg'></img>", choices: ["<img src='img/tf1_39_T1_ss2_md.jpeg'></img>", "<img src='img/tf1_39_T2_ss2_md.jpeg'></img>", "<img src='img/tf1_39_T3_ss2_md.jpeg'></img>", "<img src='img/tf1_39_T4_ss2_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_39_T1_ss2_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_40_M_ss3.jpeg'></img>", choices: ["<img src='img/tf1_40_T1_ss3_md.jpeg'></img>", "<img src='img/tf1_40_T2_ss3_md.jpeg'></img>", "<img src='img/tf1_40_T3_ss3_md.jpeg'></img>", "<img src='img/tf1_40_T4_ss3_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_40_T1_ss3_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_41_M_ss1.jpeg'></img>", choices: ["<img src='img/tf1_41_T1_ss1_md.jpeg'></img>", "<img src='img/tf1_41_T2_ss1_md.jpeg'></img>", "<img src='img/tf1_41_T3_ss1_md.jpeg'></img>", "<img src='img/tf1_41_T4_ss1_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_41_T1_ss1_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_42_M_ss2.jpeg'></img>", choices: ["<img src='img/tf1_42_T1_ss2_md.jpeg'></img>", "<img src='img/tf1_42_T2_ss2_md.jpeg'></img>", "<img src='img/tf1_42_T3_ss2_md.jpeg'></img>", "<img src='img/tf1_42_T4_ss2_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_42_T1_ss2_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_43_M_ss3.jpeg'></img>", choices: ["<img src='img/tf1_43_T1_ss3_md.jpeg'></img>", "<img src='img/tf1_43_T2_ss3_md.jpeg'></img>", "<img src='img/tf1_43_T3_ss3_md.jpeg'></img>", "<img src='img/tf1_43_T4_ss3_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_43_T1_ss3_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_44_M_ss1.jpeg'></img>", choices: ["<img src='img/tf1_44_T1_ss1_md.jpeg'></img>", "<img src='img/tf1_44_T2_ss1_md.jpeg'></img>", "<img src='img/tf1_44_T3_ss1_md.jpeg'></img>", "<img src='img/tf1_44_T4_ss1_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_44_T1_ss1_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_45_M_ss2.jpeg'></img>", choices: ["<img src='img/tf1_45_T1_ss2_md.jpeg'></img>", "<img src='img/tf1_45_T2_ss2_md.jpeg'></img>", "<img src='img/tf1_45_T3_ss2_md.jpeg'></img>", "<img src='img/tf1_45_T4_ss2_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_45_T1_ss2_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_46_M_ss3.jpeg'></img>", choices: ["<img src='img/tf1_46_T1_ss3_md.jpeg'></img>", "<img src='img/tf1_46_T2_ss3_md.jpeg'></img>", "<img src='img/tf1_46_T3_ss3_md.jpeg'></img>", "<img src='img/tf1_46_T4_ss3_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_46_T1_ss3_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_47_M_ss1.jpeg'></img>", choices: ["<img src='img/tf1_47_T1_ss1_md.jpeg'></img>", "<img src='img/tf1_47_T2_ss1_md.jpeg'></img>", "<img src='img/tf1_47_T3_ss1_md.jpeg'></img>", "<img src='img/tf1_47_T4_ss1_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_47_T1_ss1_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_48_M_ss2.jpeg'></img>", choices: ["<img src='img/tf1_48_T1_ss2_md.jpeg'></img>", "<img src='img/tf1_48_T2_ss2_md.jpeg'></img>", "<img src='img/tf1_48_T3_ss2_md.jpeg'></img>", "<img src='img/tf1_48_T4_ss2_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_48_T1_ss2_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_49_M_ss3.jpeg'></img>", choices: ["<img src='img/tf1_49_T1_ss3_md.jpeg'></img>", "<img src='img/tf1_49_T2_ss3_md.jpeg'></img>", "<img src='img/tf1_49_T3_ss3_md.jpeg'></img>", "<img src='img/tf1_49_T4_ss3_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_49_T1_ss3_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_50_M_ss1.jpeg'></img>", choices: ["<img src='img/tf1_50_T1_ss1_md.jpeg'></img>", "<img src='img/tf1_50_T2_ss1_md.jpeg'></img>", "<img src='img/tf1_50_T3_ss1_md.jpeg'></img>", "<img src='img/tf1_50_T4_ss1_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_50_T1_ss1_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_51_M_ss2.jpeg'></img>", choices: ["<img src='img/tf1_51_T1_ss2_md.jpeg'></img>", "<img src='img/tf1_51_T2_ss2_md.jpeg'></img>", "<img src='img/tf1_51_T3_ss2_md.jpeg'></img>", "<img src='img/tf1_51_T4_ss2_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_51_T1_ss2_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_52_M_ss3.jpeg'></img>", choices: ["<img src='img/tf1_52_T1_ss3_md.jpeg'></img>", "<img src='img/tf1_52_T2_ss3_md.jpeg'></img>", "<img src='img/tf1_52_T3_ss3_md.jpeg'></img>", "<img src='img/tf1_52_T4_ss3_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_52_T1_ss3_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_53_M_ss1.jpeg'></img>", choices: ["<img src='img/tf1_53_T1_ss1_md.jpeg'></img>", "<img src='img/tf1_53_T2_ss1_md.jpeg'></img>", "<img src='img/tf1_53_T3_ss1_md.jpeg'></img>", "<img src='img/tf1_53_T4_ss1_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_53_T1_ss1_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_54_M_ss2.jpeg'></img>", choices: ["<img src='img/tf1_54_T1_ss2_md.jpeg'></img>", "<img src='img/tf1_54_T2_ss2_md.jpeg'></img>", "<img src='img/tf1_54_T3_ss2_md.jpeg'></img>", "<img src='img/tf1_54_T4_ss2_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_54_T1_ss2_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_55_M_ss3.jpeg'></img>", choices: ["<img src='img/tf1_55_T1_ss3_md.jpeg'></img>", "<img src='img/tf1_55_T2_ss3_md.jpeg'></img>", "<img src='img/tf1_55_T3_ss3_md.jpeg'></img>", "<img src='img/tf1_55_T4_ss3_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_55_T1_ss3_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_56_M_ss1.jpeg'></img>", choices: ["<img src='img/tf1_56_T1_ss1_md.jpeg'></img>", "<img src='img/tf1_56_T2_ss1_md.jpeg'></img>", "<img src='img/tf1_56_T3_ss1_md.jpeg'></img>", "<img src='img/tf1_56_T4_ss1_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_56_T1_ss1_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_57_M_ss2.jpeg'></img>", choices: ["<img src='img/tf1_57_T1_ss2_md.jpeg'></img>", "<img src='img/tf1_57_T2_ss2_md.jpeg'></img>", "<img src='img/tf1_57_T3_ss2_md.jpeg'></img>", "<img src='img/tf1_57_T4_ss2_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_57_T1_ss2_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_58_M_ss3.jpeg'></img>", choices: ["<img src='img/tf1_58_T1_ss3_md.jpeg'></img>", "<img src='img/tf1_58_T2_ss3_md.jpeg'></img>", "<img src='img/tf1_58_T3_ss3_md.jpeg'></img>", "<img src='img/tf1_58_T4_ss3_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_58_T1_ss3_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_59_M_ss1.jpeg'></img>", choices: ["<img src='img/tf1_59_T1_ss1_md.jpeg'></img>", "<img src='img/tf1_59_T2_ss1_md.jpeg'></img>", "<img src='img/tf1_59_T3_ss1_md.jpeg'></img>", "<img src='img/tf1_59_T4_ss1_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_59_T1_ss1_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_60_M_ss2.jpeg'></img>", choices: ["<img src='img/tf1_60_T1_ss2_md.jpeg'></img>", "<img src='img/tf1_60_T2_ss2_md.jpeg'></img>", "<img src='img/tf1_60_T3_ss2_md.jpeg'></img>", "<img src='img/tf1_60_T4_ss2_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_60_T1_ss2_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_61_M_ss3.jpeg'></img>", choices: ["<img src='img/tf1_61_T1_ss3_md.jpeg'></img>", "<img src='img/tf1_61_T2_ss3_md.jpeg'></img>", "<img src='img/tf1_61_T3_ss3_md.jpeg'></img>", "<img src='img/tf1_61_T4_ss3_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_61_T1_ss3_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_62_M_ss1.jpeg'></img>", choices: ["<img src='img/tf1_62_T1_ss1_md.jpeg'></img>", "<img src='img/tf1_62_T2_ss1_md.jpeg'></img>", "<img src='img/tf1_62_T3_ss1_md.jpeg'></img>", "<img src='img/tf1_62_T4_ss1_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_62_T1_ss1_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_63_M_ss2.jpeg'></img>", choices: ["<img src='img/tf1_63_T1_ss2_md.jpeg'></img>", "<img src='img/tf1_63_T2_ss2_md.jpeg'></img>", "<img src='img/tf1_63_T3_ss2_md.jpeg'></img>", "<img src='img/tf1_63_T4_ss2_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_63_T1_ss2_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_64_M_ss3.jpeg'></img>", choices: ["<img src='img/tf1_64_T1_ss3_md.jpeg'></img>", "<img src='img/tf1_64_T2_ss3_md.jpeg'></img>", "<img src='img/tf1_64_T3_ss3_md.jpeg'></img>", "<img src='img/tf1_64_T4_ss3_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_64_T1_ss3_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_65_M_ss1.jpeg'></img>", choices: ["<img src='img/tf1_65_T1_ss1_md.jpeg'></img>", "<img src='img/tf1_65_T2_ss1_md.jpeg'></img>", "<img src='img/tf1_65_T3_ss1_md.jpeg'></img>", "<img src='img/tf1_65_T4_ss1_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_65_T1_ss1_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_66_M_ss2.jpeg'></img>", choices: ["<img src='img/tf1_66_T1_ss2_md.jpeg'></img>", "<img src='img/tf1_66_T2_ss2_md.jpeg'></img>", "<img src='img/tf1_66_T3_ss2_md.jpeg'></img>", "<img src='img/tf1_66_T4_ss2_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_66_T1_ss2_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_67_M_ss3.jpeg'></img>", choices: ["<img src='img/tf1_67_T1_ss3_md.jpeg'></img>", "<img src='img/tf1_67_T2_ss3_md.jpeg'></img>", "<img src='img/tf1_67_T3_ss3_md.jpeg'></img>", "<img src='img/tf1_67_T4_ss3_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_67_T1_ss3_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_68_M_ss1.jpeg'></img>", choices: ["<img src='img/tf1_68_T1_ss1_md.jpeg'></img>", "<img src='img/tf1_68_T2_ss1_md.jpeg'></img>", "<img src='img/tf1_68_T3_ss1_md.jpeg'></img>", "<img src='img/tf1_68_T4_ss1_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_68_T1_ss1_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_69_M_ss2.jpeg'></img>", choices: ["<img src='img/tf1_69_T1_ss2_md.jpeg'></img>", "<img src='img/tf1_69_T2_ss2_md.jpeg'></img>", "<img src='img/tf1_69_T3_ss2_md.jpeg'></img>", "<img src='img/tf1_69_T4_ss2_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_69_T1_ss2_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_70_M_ss3.jpeg'></img>", choices: ["<img src='img/tf1_70_T1_ss3_md.jpeg'></img>", "<img src='img/tf1_70_T2_ss3_md.jpeg'></img>", "<img src='img/tf1_70_T3_ss3_md.jpeg'></img>", "<img src='img/tf1_70_T4_ss3_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_70_T1_ss3_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_71_M_ss1.jpeg'></img>", choices: ["<img src='img/tf1_71_T1_ss1_md.jpeg'></img>", "<img src='img/tf1_71_T2_ss1_md.jpeg'></img>", "<img src='img/tf1_71_T3_ss1_md.jpeg'></img>", "<img src='img/tf1_71_T4_ss1_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_71_T1_ss1_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_72_M_ss2.jpeg'></img>", choices: ["<img src='img/tf1_72_T1_ss2_md.jpeg'></img>", "<img src='img/tf1_72_T2_ss2_md.jpeg'></img>", "<img src='img/tf1_72_T3_ss2_md.jpeg'></img>", "<img src='img/tf1_72_T4_ss2_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_72_T1_ss2_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_73_M_ss3.jpeg'></img>", choices: ["<img src='img/tf1_73_T1_ss3_md.jpeg'></img>", "<img src='img/tf1_73_T2_ss3_md.jpeg'></img>", "<img src='img/tf1_73_T3_ss3_md.jpeg'></img>", "<img src='img/tf1_73_T4_ss3_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_73_T1_ss3_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_74_M_ss1.jpeg'></img>", choices: ["<img src='img/tf1_74_T1_ss1_md.jpeg'></img>", "<img src='img/tf1_74_T2_ss1_md.jpeg'></img>", "<img src='img/tf1_74_T3_ss1_md.jpeg'></img>", "<img src='img/tf1_74_T4_ss1_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_74_T1_ss1_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_75_M_ss2.jpeg'></img>", choices: ["<img src='img/tf1_75_T1_ss2_md.jpeg'></img>", "<img src='img/tf1_75_T2_ss2_md.jpeg'></img>", "<img src='img/tf1_75_T3_ss2_md.jpeg'></img>", "<img src='img/tf1_75_T4_ss2_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_75_T1_ss2_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_76_M_ss3.jpeg'></img>", choices: ["<img src='img/tf1_76_T1_ss3_md.jpeg'></img>", "<img src='img/tf1_76_T2_ss3_md.jpeg'></img>", "<img src='img/tf1_76_T3_ss3_md.jpeg'></img>", "<img src='img/tf1_76_T4_ss3_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_76_T1_ss3_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_77_M_ss1.jpeg'></img>", choices: ["<img src='img/tf1_77_T1_ss1_md.jpeg'></img>", "<img src='img/tf1_77_T2_ss1_md.jpeg'></img>", "<img src='img/tf1_77_T3_ss1_md.jpeg'></img>", "<img src='img/tf1_77_T4_ss1_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_77_T1_ss1_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_78_M_ss2.jpeg'></img>", choices: ["<img src='img/tf1_78_T1_ss2_md.jpeg'></img>", "<img src='img/tf1_78_T2_ss2_md.jpeg'></img>", "<img src='img/tf1_78_T3_ss2_md.jpeg'></img>", "<img src='img/tf1_78_T4_ss2_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_78_T1_ss2_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_79_M_ss3.jpeg'></img>", choices: ["<img src='img/tf1_79_T1_ss3_md.jpeg'></img>", "<img src='img/tf1_79_T2_ss3_md.jpeg'></img>", "<img src='img/tf1_79_T3_ss3_md.jpeg'></img>", "<img src='img/tf1_79_T4_ss3_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_79_T1_ss3_md.jpeg'></img>", correct_button: 0}},
+    { stimulus: "<img style='border: 4px solid darkgrey;' src='img/tf1_80_M_ss1.jpeg'></img>", choices: ["<img src='img/tf1_80_T1_ss1_md.jpeg'></img>", "<img src='img/tf1_80_T2_ss1_md.jpeg'></img>", "<img src='img/tf1_80_T3_ss1_md.jpeg'></img>", "<img src='img/tf1_80_T4_ss1_md.jpeg'></img>"], data: {part: 'exp', correct_response: "<img src='img/tf1_80_T1_ss1_md.jpeg'></img>", correct_button: 0}}
+  ];
+
+  // include fixation cross (+)
+  var fixation = {
+    type: 'html-keyboard-response', // plugin we use
+    stimulus: '<div style="font-size:60px;">+</div>', // define the size of the fixation cross
+    choices: jsPsych.NO_KEYS, // no responses will be accepted
+    trial_duration: 500, // how long do we want to present the fixation cross
+    post_trial_gap: 100, // there will be a 100ms blank screen after the fixation cross
+  data: {part: 'fixation'},
+  on_finish: function(timestamp){
+      var timestamp = (new Date).toISOString().replace(/z|t/gi,' ').trim();
+      jsPsych.data.addDataToLastTrial({timestamp});}
+  }
+
+  // set up new trial
+  var trial = {
+    type: "mars-trial",
+    stimulus: jsPsych.timelineVariable('stimulus'),
+    choices: jsPsych.timelineVariable('choices'),
+    data: jsPsych.timelineVariable('data'),
+    trial_duration: 30000, // subjects have 30 seconds to respond
+    countdown_start: 25000, // when to start countdown clock
+    feedback_duration: 500, // 500 ms feedback duration
+    shuffle_buttons: true, // randomize choice options
+    display_feedback: true,
+    pos_img: "<div id='feedback'> <img src='practice/correct.jpg' height='100' width='100'></img> </div>",
+    neg_img: "<div id='feedback'> <img src='practice/incorrect_main.jpg' height='100' width='100'></img> </div>",
+    on_finish: function(data){ // identify correct response
+      if (data.unshuffled_button == data.correct_button) {
+        data.correct = true;}
+      else {data.correct = false}
+    },
+    function(timestamp){
+      var timestamp = (new Date).toISOString().replace(/z|t/gi,' ').trim();
+      jsPsych.data.addDataToLastTrial({timestamp});}
+  }
+
+
+  // create new timeline to link test_stimuli
+  var procedure = {
+    timeline: [fixation, trial],
+    timeline_variables: stimuli,
+    randomize_order: false, // we don't want to randomize the order for the main trials
+  }
+
+
+  // end screen
+  var end = {
+    type: "audio-button-response",
+    prompt: "<p>All done!</p> " +
+        "<p>Thank you very much for completing this part of the study.</p><br> ",
+    choices: ['Click here to conclude this part of the study'],
+    stimulus: "audio/mars_instructions_slide5.wav"
+  };
+
+
+  var exp_timer = function(){ setTimeout(function(){
+    jsPsych.finishTrial();
+    jsPsych.endCurrentTimeline();
+    }, 480000); // 8-minute timer
+  }
+
+  var start_timer = {
+    type: 'call-function',
+    func: exp_timer
+  }
+
+  // // exit fullscreen mode
+  // timeline.push({
+  //   type: 'fullscreen',
+  //   fullscreen_mode: false
+  // });
+
+  // BUILD TIMELINE
+
+  // main timeline
+  main_timeline.push(pavlovia_init)
+  main_timeline.push(welcome)
+  main_timeline.push(instructions_1);
+  main_timeline.push(instructions_2);
+  main_timeline.push(practice_procedure_1);
+  main_timeline.push(practice_procedure_2);
+  main_timeline.push(practice_procedure_3);
+  main_timeline.push(instructions_3);
+  main_timeline.push(start_timer);
+  main_timeline.push(procedure);
+  main_timeline.push(end);
+  main_timeline.push(pavlovia_finish);
+
+  // SAVE DATA
+
+  /** GET SUB ID BASED ON URL **/
+  var urlvar = jsPsych.data.urlVariables();
+  var file_name = 'mars_' + urlvar.participant  + '_' + getFormattedTime();
+
+  // start the experiment
+  jsPsych.init({
+    timeline: main_timeline,
+    preload_images: images,
+    on_trial_start: function(data){
+      jsPsych.data.get().addToAll({subject_id: urlvar.participant});
+      var interaction_data = jsPsych.data.getInteractionData();
+      var blur_events = interaction_data.filter({event: 'blur'});
+      var focus_events = interaction_data.filter({event: 'focus'});
+      var fullscreenenter_events = interaction_data.filter({event: 'fullscreenenter'});
+      var fullscreenexit_events = interaction_data.filter({event: 'fullscreenexit'});
+      jsPsych.data.get().addToLast({interactions: interaction_data.csv()});
+      jsPsych.data.get().addToLast({blur_events: blur_events.csv()});
+      jsPsych.data.get().addToLast({focus_events: focus_events.csv()});
+      jsPsych.data.get().addToLast({fullscreenenter_events: fullscreenenter_events.csv()});
+      jsPsych.data.get().addToLast({fullscreenexit_events: fullscreenexit_events.csv()});
+    },
+    on_interaction_data_update: function (data){
+      var interaction_data = jsPsych.data.getInteractionData();
+      var blur_events = interaction_data.filter({event: 'blur'});
+      var focus_events = interaction_data.filter({event: 'focus'});
+      var fullscreenenter_events = interaction_data.filter({event: 'fullscreenenter'});
+      var fullscreenexit_events = interaction_data.filter({event: 'fullscreenexit'});
+      jsPsych.data.get().addToLast({interactions: interaction_data.csv()});
+      jsPsych.data.get().addToLast({blur_events: blur_events.csv()});
+      jsPsych.data.get().addToLast({focus_events: focus_events.csv()});
+      jsPsych.data.get().addToLast({fullscreenenter_events: fullscreenenter_events.csv()});
+      jsPsych.data.get().addToLast({fullscreenexit_events: fullscreenexit_events.csv()});},
+    on_close: function (data) {
+      var interaction_data = jsPsych.data.getInteractionData();
+      var blur_events = interaction_data.filter({event: 'blur'});
+      var focus_events = interaction_data.filter({event: 'focus'});
+      var fullscreenenter_events = interaction_data.filter({event: 'fullscreenenter'});
+      var fullscreenexit_events = interaction_data.filter({event: 'fullscreenexit'});
+      jsPsych.data.get().addToLast({interactions: interaction_data.csv()});
+      jsPsych.data.get().addToLast({blur_events: blur_events.csv()});
+      jsPsych.data.get().addToLast({focus_events: focus_events.csv()});
+      jsPsych.data.get().addToLast({fullscreenenter_events: fullscreenenter_events.csv()});
+      jsPsych.data.get().addToLast({fullscreenexit_events: fullscreenexit_events.csv()});
+      jsPsych.data.get().addToAll({subject_id: urlvar.participant});}, // add subject from url
+      //jsPsych.data.get().localSave('csv', file_name);},    // save data locally
+    on_finish: function(data) {
+      var interaction_data = jsPsych.data.getInteractionData();
+      var blur_events = interaction_data.filter({event: 'blur'});
+      var focus_events = interaction_data.filter({event: 'focus'});
+      var fullscreenenter_events = interaction_data.filter({event: 'fullscreenenter'});
+      var fullscreenexit_events = interaction_data.filter({event: 'fullscreenexit'});
+      jsPsych.data.get().addToLast({interactions: interaction_data.csv()});
+      jsPsych.data.get().addToLast({blur_events: blur_events.csv()});
+      jsPsych.data.get().addToLast({focus_events: focus_events.csv()});
+      jsPsych.data.get().addToLast({fullscreenenter_events: fullscreenenter_events.csv()});
+      jsPsych.data.get().addToLast({fullscreenexit_events: fullscreenexit_events.csv()});
+      jsPsych.data.get().addToAll({subject_id: urlvar.participant}); // add subject from url
+      //jsPsych.data.get().localSave('csv', file_name);    // save data locally
+      //document.body.innerHTML = '<p> <center> Please wait while your data saves. You will be redirected to the final page in 10 seconds. Please click "leave" when asked if you would like to leave this page. </center> </p>'
+      //setTimeout(function () { location.href = 'https://nyu.qualtrics.com/jfe/form/SV_6MAOkiTWOWciBwx'}, 10000)
+    }
+  });
+
+
+</script>
+</html>
