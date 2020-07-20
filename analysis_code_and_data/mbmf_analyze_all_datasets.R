@@ -263,9 +263,6 @@ data <- full_join(data, sub_ages, by = "subject_id")
 #add age groups to data 
 data <- addAgeGroup(data, age)
 
-#save unfiltered data
-unfiltered_decker_data <- data
-
 #name output folder
 output_folder <- "output/decker_data"
 
@@ -324,7 +321,7 @@ tab_model(rt.mb.model,
           file = glue("{output_folder}/rt_mb_model.html"))
 
 # Compute stats on explicit knowledge of transition structure
-explicit_data <- read_csv('previous_data/decker_ages.csv') %>%
+explicit_data <- read_csv('data/decker/decker_ages.csv') %>%
   select(subject_id, explicit_q_correct, age)
 
 explicit_data <- addAgeGroup(explicit_data, age)
