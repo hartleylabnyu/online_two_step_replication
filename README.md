@@ -1,5 +1,5 @@
 # Tracking developmental changes in model-based reinforcement learning: an online replication study
-Tasks, data, and analysis scripts for Nussenbaum, K., Scheuplein, M., Phaneuf, C., & Hartley, C.A. (_submitted_). 
+Tasks, data, and analysis scripts for Nussenbaum, K., Scheuplein, M., Phaneuf, C., Evans, M.D., & Hartley, C.A. (_submitted_). 
 Tracking developmental changes in model-based reinforcement learning: an online replication study.
 
 We collected data from 151 participants on two tasks: the two-step task, as described in Decker et al. (2016)
