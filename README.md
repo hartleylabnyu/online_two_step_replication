@@ -3,7 +3,7 @@ Tasks, data, and analysis scripts for Nussenbaum, K., Scheuplein, M., Phaneuf, C
 Moving developmental research online: comparing in-lab and web-based studies of model-based reinforcement learning.
 
 We collected data from 151 participants on two tasks: the two-step task, as described in Decker et al. (2016)
-and the Matrix Reasoning Item Bank (MaRs-IB) as described in Chierchia et al. (2019). 
+and the Matrix Reasoning Item Bank (MaRs-IB) as described in Chierchia, Fuhrmann et al. (2019). 
 
 ## Tasks
 Versions of both tasks, coded in [jsPsych](https://www.jspsych.org/), can be found in the "tasks" folder.
@@ -16,7 +16,7 @@ Participants make a series of sequential decisions to try to gain as much reward
 The jsPsych version of the task was originally coded by the [Niv Lab](https://nivlab.princeton.edu/) at Princeton, and adapted by the [Hartley Lab](https://www.hartleylab.org/) at NYU for use online with children, adolescents, and adults.
 
 ### 2. Matrix Reasoning Item Bank (MaRs-IB)
-This abstract reasoning task was developed by and originally described in [Chierchia et al. (2019)](https://royalsocietypublishing.org/doi/10.1098/rsos.190232). All stimuli used in the task are from the [OSF repository](https://osf.io/g96f4/) set up by the original study authors.
+This abstract reasoning task was developed by and originally described in [Chierchia, Furhmann et al. (2019)](https://royalsocietypublishing.org/doi/10.1098/rsos.190232). All stimuli used in the task are from the [OSF repository](https://osf.io/g96f4/) set up by the original study authors.
 Participants complete a series of reasoning puzzles within an 8-minute time limit.
 The jsPsych version of the task uses one of the color-blind friendly stimulus sets as well as the "minimal" distractors described in the original manuscript. It was coded by the Hartley Lab for use online with children, adolescents, and adults.
 
