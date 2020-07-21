@@ -23,17 +23,17 @@ addAgeGroup <- function(df, ageColumn){
 }
 
 #get list of files
-data_files <- list.files(path = "data/")
+data_files <- list.files(path = "data/online/online_csvs/")
 
 #initialize data frame
 data <- data.frame()
 
 #### Read in data ####
 for (i in c(1:length(data_files))){
-  sub_data <- read_csv(glue("data/{data_files[i]}")) 
+  sub_data <- read_csv(glue("data/online/online_csvs/{data_files[i]}")) 
   
   #get task date from filename
-  task_date <- sapply(strsplit(glue("data/{data_files[i]}"), '_'), `[`, 4)
+  task_date <- sapply(strsplit(glue("data/online/online_csvs/{data_files[i]}"), '_'), `[`, 4)
   sub_data$task_date <- task_date
   
   #compute the number of browser interactions
@@ -100,7 +100,7 @@ summary_stats <- data %>%
 
 
 #read in subject ages
-sub_ages <- read_csv('mbmf_ages.csv') 
+sub_ages <- read_csv('data/online/mbmf_ages.csv') 
 sub_ages$subject_id <- as.character(sub_ages$subject_id)
 
 #combine with summary stats
@@ -108,7 +108,6 @@ summary_stats <- full_join(summary_stats, sub_ages, by = "subject_id")
 
 #add age group
 summary_stats <- addAgeGroup(summary_stats, age)
-
 
 stats_to_plot <- summary_stats %>%
   select(fast_rts, browser_interactions, num_quiz_correct, missed_responses, age_group)
@@ -238,4 +237,17 @@ age_group_stats <- age_group_stats %>%
 
 write_delim(age_group_stats, 'output/online_data/quality_checking/age_group_stats.txt',
             delim = "\t")
+
+#### Age and gender distribution ####
+sub_ages_plot <- ggplot(sub_ages, aes(x = age, fill = gender)) +
+  geom_histogram(breaks = c(8:26), color = "black") +
+  scale_fill_brewer(type = "seq", name = "Gender") +
+  ylab("Number of participants") +
+  xlab("Age (years)") +
+  theme_minimal() 
+sub_ages_plot
+
+ggsave('output/online_data/quality_checking/sub_ages.png', plot = last_plot(), height = 2.5, width = 5, unit = "in", dpi = 300)
+
+
 
