@@ -22,7 +22,7 @@ The jsPsych version of the task uses one of the color-blind friendly stimulus se
 
 
 ## Data and analysis code
-All raw data and analysis code can be found in the "data_and_analysis_code" folder. All analyses and results reported in the manuscript can be reproduced by running the R scripts (for all data summary statistics and regression analyses) and matlab code (for the computational modeling of the two-step task data). 
+All raw data and analysis code can be found in the "analysis_code_and_data" folder. All analyses and results reported in the manuscript can be reproduced by running the R scripts (for all data summary statistics and regression analyses) and matlab code (for the computational modeling of the two-step task data). 
 
 The output folder contains all model results and generated figures. 
 
