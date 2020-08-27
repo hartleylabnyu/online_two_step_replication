@@ -623,3 +623,21 @@ wasi_plot
 
 #save plot
 ggsave(glue("{output_folder}/wasi_plot.png"), plot = last_plot(), height = 3, width = 5, unit = "in", dpi = 300)
+
+
+##########################################
+#### MaRs-IB ~ WASI w/ exclusions ####
+##########################################
+# create dataset
+wasi_data <- mars_subs %>%
+  rename(wasi_mr = WASI_raw_MR,
+         wasi_verbal = WASI_rawVerbal,
+         wasi_IQ = WASI_IQ) %>%
+  filter(wasi_mr > 15)
+
+wasi_data$age_z <- scale_this(wasi_data$age)
+wasi_data$wasi_mr_z <- scale_this(wasi_data$wasi_mr)
+
+# Examine relation between WASI MR and mars-accuracy
+wasi.mars.excl <- lm(acc ~ wasi_mr_z * age_z , data = wasi_data)
+summary(wasi.mars.excl)
