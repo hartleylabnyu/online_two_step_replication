@@ -209,3 +209,21 @@ age_group_stats <- age_group_stats %>%
 write_delim(age_group_stats, 'output/mars/quality_checking/mars_age_group_stats.txt',
             delim = "\t")
 
+
+#### Make summary table ####
+mars_data_summary <- stats_to_plot %>%
+  group_by(age_group) %>%
+  summarize(three_quiz = sum(num_quiz_correct == 3),
+            four_quiz = sum(num_quiz_correct <= 4),
+            five_quiz = sum(num_quiz_correct <=5),
+            browser_int_under_3 = sum(browser_interactions <= 3),
+            browser_int_under_5 = sum(browser_interactions <= 5),
+            browser_int_under_10 = sum(browser_interactions <= 10),
+            missed_under_3 = sum(missed_responses <= 3),
+            missed_under_5 = sum(missed_responses <= 5),
+            missed_under_10 = sum(missed_responses <= 10),
+            fast_under_3 = sum(fast_rts <= 3),
+            fast_under_5 = sum(fast_rts <= 5),
+            fast_under_10 = sum(fast_rts <= 10)
+  )
+mars_data_summary

@@ -250,4 +250,20 @@ sub_ages_plot
 ggsave('output/online_data/quality_checking/sub_ages.png', plot = last_plot(), height = 2.5, width = 5, unit = "in", dpi = 300)
 
 
-
+#### Make summary table ####
+mbmf_data_summary <- stats_to_plot %>%
+  group_by(age_group) %>%
+  summarize(one_quiz_correct = sum(num_quiz_correct >= 1),
+            two_quiz_correct = sum(num_quiz_correct >= 2),
+            three_quiz_correct = sum(num_quiz_correct == 3),
+            browser_int_under_3 = sum(browser_interactions <= 3),
+            browser_int_under_5 = sum(browser_interactions <= 5),
+            browser_int_under_10 = sum(browser_interactions <= 10),
+            missed_under_10 = sum(missed_responses <= 10),
+            missed_under_20 = sum(missed_responses <= 20),
+            missed_under_40 = sum(missed_responses <= 40),
+            fast_under_10 = sum(fast_rts <= 10),
+            fast_under_20 = sum(fast_rts <= 20),
+            fast_under_40 = sum(fast_rts <= 40)
+            )
+mbmf_data_summary
