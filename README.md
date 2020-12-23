@@ -17,6 +17,7 @@ The jsPsych version of the task was originally coded by the [Niv Lab](https://ni
 
 ### 2. Matrix Reasoning Item Bank (MaRs-IB)
 This abstract reasoning task was developed by and originally described in [Chierchia, Furhmann et al. (2019)](https://royalsocietypublishing.org/doi/10.1098/rsos.190232). All stimuli used in the task are from the [OSF repository](https://osf.io/g96f4/) set up by the original study authors.
+
 Participants complete a series of reasoning puzzles within an 8-minute time limit.
 The jsPsych version of the task uses one of the color-blind friendly stimulus sets as well as the "minimal" distractors described in the original manuscript. It was coded by the Hartley Lab for use online with children, adolescents, and adults.
 
